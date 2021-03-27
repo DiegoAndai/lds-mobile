@@ -1,33 +1,51 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Button } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 import styled from 'styled-components/native';
+import Button from '../../components/Button';
+import { COLORS, StyleUtils } from '../../utils/styles';
+import ScrollableScreen from '../ScrollableScreen';
 
 export default function Search() {
   const [search, setSearch] = useState('');
+  const navigation = useNavigation();
 
   function miFuncion() {
-    console.log(`Buscar ${search}`);
+    navigation.navigate('Results', { search })
   }
 
   return (
-    <Container>
-      <Input
-        value={search}
-        onChangeText={setSearch}
-      />
-      <Button title='Buscar' onPress={miFuncion}/>
-    </Container>
+    <ScrollableScreen>
+      <Container>
+        <Input
+          value={search}
+          onChangeText={setSearch}
+          placeholder="Buscar"
+          selectionColor={COLORS.pink600}
+        />
+        {
+          !!search && <SpacedButton title='Buscar' onPress={miFuncion}/>
+        }
+      </Container>
+    </ScrollableScreen>
   );
 }
 
 const Container = styled.SafeAreaView`
-  height: 100%;
+  flex: 1;
   justify-content: center;
+  ${StyleUtils.spaced()}
 `
 
 const Input = styled.TextInput`
-  border-bottom-width: 1px;
-  border-color: black;
+  font-family: CormorantGaramond;
+  ${StyleUtils.fontSize('xl')}
+  border-bottom-width: 0.5px;
+  border-color: #374151;
   margin: 10px;
   padding: 10px;
+`
+
+const SpacedButton = styled(Button)`
+  ${StyleUtils.spacedTop()}
 `
